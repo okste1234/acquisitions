@@ -1,21 +1,14 @@
+import { signIn, signOut, signUp, } from '#controllers/auth.controller.js';
 import express from 'express';
 
 const router = express.Router();
 
 
-router.post('/sign-up', (req, res) => {
-  // Handle signup logic here
-  res.status(200).json({ message: 'Signup successful' });
-});
+router.post('/sign-up', signUp);
 
-router.post('/sign-in', (req, res) => {
-  // Handle login logic here
-  res.status(200).send('POST /auth/sign-in endpoint hit');
-});
+router.post('/sign-in', signIn);
 
-router.post('/sign-out', (req, res) => {
-  // Handle logout logic here
-  res.status(200).send('POST /auth/sign-out endpoint hit');
-});
+
+router.post('/sign-out', signOut);
 
 export default router;
