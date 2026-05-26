@@ -1,17 +1,52 @@
 // setting up express app with right middleware here
 
 import express from 'express';
-import bodyParser from 'body-parser';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
+
+import logger from '#config/logger.js';
+import helmet from 'helmet';
+import morgan from 'morgan';
+
+import authRoutes from '#routes/auth.routes.js';
 
 const app = express();
-// const PORT = process.env.PORT || 3000;
 
-app.use(bodyParser.json());
+app.use(helmet());
 app.use(cors());
 
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
+
 app.get('/', (req, res) => {
+  logger.info('LOGGERS - - - Hello Acquisitions API!');
+  
   res.status(200).send('Welcome to the Acquisitions API!');
 });
+
+app.get('/health', (req, res) => {
+  
+  res.status(200).json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
+
+app.get('/ ', (req, res) => {
+  
+  res.status(200).json({
+    message: 'Acquisitions  API is working',
+    timestamp: new Date().toISOString()
+  });
+});
+
+app.use('/api/auth', authRoutes);
+
+
 
 export default app;

@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(cors());
 
-let acquisitions = [];
+const acquisitions = [];
 
 // Get all acquisitions
 app.get('/acquisitions', (req, res) => {
@@ -19,5 +19,5 @@ app.get('/acquisitions', (req, res) => {
 
 
 app.listen(PORT, () =>
-    { console.log(`Server is running on port ${PORT}...`); }
+{ console.log(`Server is running on port ${PORT}...`); }
 );
