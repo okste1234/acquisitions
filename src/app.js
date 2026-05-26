@@ -10,10 +10,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
- 
-app.get('/', (req, res) => { 
-    res.status(200).send('Welcome to the Acquisitions API!');
-})
+app.get('/', (req, res) => {
+  res.status(200).send('Welcome to the Acquisitions API!');
+});
 
 export default app;
-
