@@ -10,6 +10,7 @@ import morgan from 'morgan';
 
 import authRoutes from '#routes/auth.routes.js';
 import usersRoutes from '#routes/users.routes.js';
+import securityMiddleware from '#middleware/security.middleware.js';
 
 const app = express();
 
@@ -22,6 +23,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
+
+app.use(securityMiddleware);
 
 app.get('/', (req, res) => {
   logger.info('LOGGERS - - - Hello Acquisitions API!');
