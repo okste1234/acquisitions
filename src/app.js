@@ -24,21 +24,24 @@ app.use(cookieParser());
 
 app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
 
+app.get('/health', (req, res) => {
+
+  // res.status(200).json({
+  //   status: 'OK',
+  //   timestamp: new Date().toISOString(),
+  //   uptime: process.uptime()
+  // });
+
+  res.status(200).json({ status: 'OK' });
+ 
+});
+
 app.use(securityMiddleware);
 
 app.get('/', (req, res) => {
   logger.info('LOGGERS - - - Hello Acquisitions API!');
-  
-  res.status(200).send('Welcome to the Acquisitions API!');
-});
 
-app.get('/health', (req, res) => {
-  
-  res.status(200).json({
-    status: 'OK',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime()
-  });
+  res.status(200).send('Welcome to the Acquisitions API!');
 });
 
 app.get('/api', (req, res) => {
