@@ -28,4 +28,5 @@ coverage/
 *.env.test
 *.env.production
 *.env.*.local
-*.log
+*.log.neon_local/
+.neon_local/
