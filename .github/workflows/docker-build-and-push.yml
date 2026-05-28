@@ -10,7 +10,7 @@ permissions:
 
 env:
   # Image name derives from the Docker Hub account in secrets, e.g. <user>/acquisitions
-  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/acquisitions
+  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/acquisitions-app
 
 jobs:
   build-and-push:

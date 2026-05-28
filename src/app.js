@@ -17,15 +17,17 @@ const app = express();
 app.use(helmet());
 app.use(cors());
 
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
+app.use(
+  morgan('combined', {
+    stream: { write: message => logger.info(message.trim()) },
+  })
+);
 
 app.get('/health', (req, res) => {
-
   // res.status(200).json({
   //   status: 'OK',
   //   timestamp: new Date().toISOString(),
@@ -33,7 +35,6 @@ app.get('/health', (req, res) => {
   // });
 
   res.status(200).json({ status: 'OK' });
- 
 });
 
 app.use(securityMiddleware);
@@ -45,10 +46,9 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api', (req, res) => {
-  
   res.status(200).json({
     message: 'Acquisitions API is working!',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 });
 
@@ -58,7 +58,7 @@ app.use('/api/users', usersRoutes);
 app.use((req, res) => {
   res.status(404).json({
     error: 'Route not found',
-    message: `The requested URL ${req.originalUrl} was not found on this server.`
+    message: `The requested URL ${req.originalUrl} was not found on this server.`,
   });
 });
 

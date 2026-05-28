@@ -20,7 +20,7 @@ export const signUp = async (req, res, next) => {
 
     // AUTH SERVICE - CREATE USER
     const user = await createUser({ name, email, password, role });
- 
+
     //jwt creation and cookie setting
     const token = jwttoken.sign({
       id: user.id,

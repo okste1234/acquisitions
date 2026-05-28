@@ -28,7 +28,10 @@ describe('API Endpoints', () => {
       const response = await request(app).get('/nonexsistent').expect(404);
 
       expect(response.body).toHaveProperty('error', 'Route not found');
-      expect(response.body).toHaveProperty('message', 'The requested URL /nonexsistent was not found on this server.');
+      expect(response.body).toHaveProperty(
+        'message',
+        'The requested URL /nonexsistent was not found on this server.'
+      );
     });
   });
 });

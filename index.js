@@ -17,7 +17,6 @@ app.get('/acquisitions', (req, res) => {
 
 // Add a new acquisition
 
-
-app.listen(PORT, () =>
-{ console.log(`Server is running on port ${PORT}...`); }
-);
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}...`);
+});
