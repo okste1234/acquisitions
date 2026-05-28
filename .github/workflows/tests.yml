@@ -1,0 +1,72 @@
+name: Tests
+
+on:
+  push:
+    branches: [main, staging]
+  pull_request:
+    branches: [main, staging]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    env:
+      NODE_ENV: test
+      NODE_OPTIONS: --experimental-vm-modules
+      # Importing the app pulls in the DB config, so a connection string must be present.
+      # Falls back to a dummy local URL when the secret is not configured.
+      DATABASE_URL: ${{ secrets.DATABASE_URL || 'postgres://test:test@localhost:5432/testdb' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        id: tests
+        run: npm test
+
+      - name: Annotate test failures
+        if: failure() && steps.tests.outcome == 'failure'
+        run: |
+          echo "::error title=Tests failed::One or more tests failed. Run 'npm test' locally to reproduce, then fix the failing cases."
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: Write test summary
+        if: always()
+        run: |
+          {
+            echo "## Test Results"
+            echo ""
+            if [ "${{ steps.tests.outcome }}" = "success" ]; then
+              echo "Status: **Passed** — all tests succeeded."
+            else
+              echo "Status: **Failed** — see the job logs for the failing cases."
+            fi
+            echo ""
+            if [ -d coverage ]; then
+              echo "Coverage report generated and uploaded as the \`coverage-report\` artifact (retained 30 days)."
+            else
+              echo "No coverage report was generated."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
