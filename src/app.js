@@ -47,7 +47,7 @@ app.get('/', (req, res) => {
 app.get('/api', (req, res) => {
   
   res.status(200).json({
-    message: 'Acquisitions  API is working',
+    message: 'Acquisitions API is working!',
     timestamp: new Date().toISOString()
   });
 });
@@ -55,5 +55,20 @@ app.get('/api', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
 
+app.use((req, res) => {
+  res.status(404).json({
+    error: 'Route not found',
+    message: `The requested URL ${req.originalUrl} was not found on this server.`
+  });
+});
+
+app.use((err, req, res) => {
+  logger.error('Unhandled error:', err);
+
+  res.status(500).json({
+    error: 'Internal server error',
+    message: 'An unexpected error occurred',
+  });
+});
 
 export default app;
